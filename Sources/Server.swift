@@ -44,7 +44,7 @@ public struct WebSocketServer: Responder, Middleware {
         let headers: Headers = [
             "Connection": "Upgrade",
             "Upgrade": "websocket",
-            "Sec-WebSocket-Accept": Header([accept])
+            "Sec-WebSocket-Accept": accept
         ]
 
         let response = Response(status: .switchingProtocols, headers: headers) { request, stream in
@@ -73,18 +73,18 @@ public extension Request {
 
 public extension Request {
     public var webSocketVersion: String? {
-        return headers["Sec-Websocket-Version"].first
+        return headers["Sec-Websocket-Version"]
     }
 
     public var webSocketKey: String? {
-        return headers["Sec-Websocket-Key"].first
+        return headers["Sec-Websocket-Key"]
     }
 
     public var webSocketAccept: String? {
-        return headers["Sec-WebSocket-Accept"].first
+        return headers["Sec-WebSocket-Accept"]
     }
 
     public var isWebSocket: Bool {
-        return connection.first?.lowercased() == "upgrade" && upgrade.first?.lowercased() == "websocket"
+        return connection?.lowercased() == "upgrade" && upgrade?.lowercased() == "websocket"
     }
 }
